@@ -1,4 +1,4 @@
-package main
+package myeventchannel
 
 import "fmt"
 
@@ -14,17 +14,17 @@ func NewChannel() *Channel {
 	}
 }
 
-func(ch *Channel) Send(msg string) {
+func (ch *Channel) Send(msg string) {
 	for _, sub := range ch.subscribers {
 		sub.OnReceive(msg)
 	}
 }
 
-func(ch *Channel) Subscribe(sub Subscriber) {
+func (ch *Channel) Subscribe(sub Subscriber) {
 	ch.subscribers[sub.GetID()] = sub
 }
 
-func(ch *Channel) UnSubscribe(sub Subscriber) error {
+func (ch *Channel) UnSubscribe(sub Subscriber) error {
 	id := sub.GetID()
 	if _, ok := ch.subscribers[id]; ok {
 		delete(ch.subscribers, id)
@@ -33,7 +33,7 @@ func(ch *Channel) UnSubscribe(sub Subscriber) error {
 	return fmt.Errorf("can't find user %s", id)
 }
 
-func(ch *Channel) UnSubscribeAll() error {
+func (ch *Channel) UnSubscribeAll() error {
 	for _, sub := range ch.subscribers {
 		return ch.UnSubscribe(sub)
 	}
