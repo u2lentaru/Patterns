@@ -4,21 +4,21 @@ import (
 	"errors"
 )
 
-// Stack structure
-type Stack struct {
+// Queue structure
+type Queue struct {
 	head *node
 	tail *node
 	len  int
 }
 
-type node struct {
+/*type node struct {
 	data interface{}
 	next *node
 	prev *node
-}
+}*/
 
 // Push method
-func (l *Stack) Push(data interface{}) {
+func (l *Queue) Push(data interface{}) {
 	n := &node{
 		data: data,
 	}
@@ -36,12 +36,12 @@ func (l *Stack) Push(data interface{}) {
 }
 
 // Len method
-func (l *Stack) Len() int {
+func (l *Queue) Len() int {
 	return l.len
 }
 
 // Pop method
-func (l *Stack) Pop() (interface{}, error) {
+func (l *Queue) Pop() (interface{}, error) {
 	if l.head == nil && l.tail == nil {
 		return nil, errors.New("stack is empty")
 	}
@@ -54,16 +54,15 @@ func (l *Stack) Pop() (interface{}, error) {
 		return d, nil
 	}
 
-	d := l.tail.data
-	l.tail = l.tail.prev
-	l.tail.next = nil
+	d := l.head.data
+	l.head = l.head.next
+	l.head.prev = nil
 	l.len--
 	return d, nil
-
 }
 
 // ToArray method
-func (l *Stack) ToArray() []interface{} {
+func (l *Queue) ToArray() []interface{} {
 	arr := make([]interface{}, 0, l.len)
 
 	current := l.head
